@@ -1,10 +1,8 @@
 import express from "express";
-import products from "../database/productsDB.js";
+import getProducts from "../controllers/products.js";
 
 const productRouter = express.Router();
 
-productRouter.get("/", (req, res) => {
-  res.send(products);
-});
+productRouter.get("/", getProducts);
 
 export default productRouter;
