@@ -14,7 +14,7 @@ const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
 };
 
 const getProducts = (req, res) => {
-  const { brand, categories, pageNumber, pageSize } = req.query;
+  const { colorWithNames, brand, categories, pageNumber, pageSize } = req.query;
   let filteredProducts = products;
 
   if (categories) {
@@ -23,6 +23,10 @@ const getProducts = (req, res) => {
 
   if (brand) {
     filteredProducts = filterFacets(filteredProducts, brand, "brand");
+  }
+
+  if (colorWithNames) {
+    filteredProducts = filterFacets(filteredProducts, colorWithNames, "color");
   }
 
   const updatedProducts = paginateProducts(
