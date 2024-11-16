@@ -35,6 +35,19 @@ const filterRating = (filteredProducts, rating) => {
   return filteredProducts.filter((product) => product.rating >= Number(rating));
 };
 
+const sortProducts = (filteredProducts, sort) => {
+  if (sort === "stock") {
+    return filteredProducts;
+  }
+  return [...filteredProducts].sort((a, b) => {
+    if (sort === "ascPrice") {
+      return a.price - b.price;
+    } else if (sort === "descPrice") {
+      return b.price - a.price;
+    }
+  });
+};
+
 const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
   const startIndex = (pageNumber - 1) * pageSize;
   return filteredProducts.slice(startIndex, startIndex + pageSize);
@@ -45,13 +58,14 @@ const getProducts = (req, res) => {
     pageNumber,
     pageSize,
     priceRange,
+    sort,
     categories,
     size,
     brand,
     rating,
     colorWithNames,
   } = req.query;
-  let filteredProducts = products;
+  let filteredProducts = [...products];
 
   if (priceRange) {
     filteredProducts = filterPriceRange(filteredProducts, priceRange);
@@ -77,8 +91,10 @@ const getProducts = (req, res) => {
     filteredProducts = filterFacets(filteredProducts, colorWithNames, "color");
   }
 
+  const sortedProducts = sortProducts(filteredProducts, sort);
+
   const updatedProducts = paginateProducts(
-    filteredProducts,
+    sortedProducts,
     Number(pageNumber),
     Number(pageSize)
   );
