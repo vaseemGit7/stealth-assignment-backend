@@ -19,6 +19,18 @@ const filterPriceRange = (filteredProducts, priceRange) => {
   );
 };
 
+const filterSize = (filteredProducts, size) => {
+  if (Array.isArray(size)) {
+    return filteredProducts.filter((product) =>
+      product.size.some((item) => size.includes(item))
+    );
+  } else {
+    return filteredProducts.filter((product) =>
+      product.size.some((item) => item == size)
+    );
+  }
+};
+
 const filterRating = (filteredProducts, rating) => {
   return filteredProducts.filter((product) => product.rating >= Number(rating));
 };
@@ -34,6 +46,7 @@ const getProducts = (req, res) => {
     pageSize,
     priceRange,
     categories,
+    size,
     brand,
     rating,
     colorWithNames,
@@ -46,6 +59,10 @@ const getProducts = (req, res) => {
 
   if (categories) {
     filteredProducts = filterFacets(filteredProducts, categories, "category");
+  }
+
+  if (size) {
+    filteredProducts = filterSize(filteredProducts, size);
   }
 
   if (brand) {
