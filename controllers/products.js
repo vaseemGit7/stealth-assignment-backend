@@ -15,17 +15,18 @@ const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
 
 const getProducts = (req, res) => {
   const { brand, categories, pageNumber, pageSize } = req.query;
-  const filteredProducts = products;
+  let filteredProducts = products;
 
-  const categoryFiltered = filterFacets(
-    filteredProducts,
-    categories,
-    "category"
-  );
-  const brandFiltered = filterFacets(categoryFiltered, brand, "brand");
+  if (categories) {
+    filteredProducts = filterFacets(filteredProducts, categories, "category");
+  }
+
+  if (brand) {
+    filteredProducts = filterFacets(filteredProducts, brand, "brand");
+  }
 
   const updatedProducts = paginateProducts(
-    brandFiltered,
+    filteredProducts,
     Number(pageNumber),
     Number(pageSize)
   );
