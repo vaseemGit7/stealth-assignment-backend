@@ -12,19 +12,30 @@ const filterCategories = (filteredProducts, categories) => {
   }
 };
 
+const filterBrands = (categoryFiltered, brands) => {
+  if (Array.isArray(brands)) {
+    return categoryFiltered.filter((product) =>
+      brands.includes(product["brand"])
+    );
+  } else {
+    return categoryFiltered.filter((product) => product["brand"] == brands);
+  }
+};
+
 const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
   const startIndex = (pageNumber - 1) * pageSize;
   return filteredProducts.slice(startIndex, startIndex + pageSize);
 };
 
 const getProducts = (req, res) => {
-  const { categories, pageNumber, pageSize } = req.query;
+  const { brand, categories, pageNumber, pageSize } = req.query;
   const filteredProducts = products;
 
   const categoryFiltered = filterCategories(filteredProducts, categories);
+  const brandFiltered = filterBrands(categoryFiltered, brand);
 
   const updatedProducts = paginateProducts(
-    categoryFiltered,
+    brandFiltered,
     Number(pageNumber),
     Number(pageSize)
   );
