@@ -8,13 +8,18 @@ const filterFacets = (filteredProducts, facet, key) => {
   }
 };
 
+const filterRating = (filteredProducts, rating) => {
+  return filteredProducts.filter((product) => product.rating >= rating);
+};
+
 const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
   const startIndex = (pageNumber - 1) * pageSize;
   return filteredProducts.slice(startIndex, startIndex + pageSize);
 };
 
 const getProducts = (req, res) => {
-  const { colorWithNames, brand, categories, pageNumber, pageSize } = req.query;
+  const { pageNumber, pageSize, categories, brand, rating, colorWithNames } =
+    req.query;
   let filteredProducts = products;
 
   if (categories) {
@@ -23,6 +28,10 @@ const getProducts = (req, res) => {
 
   if (brand) {
     filteredProducts = filterFacets(filteredProducts, brand, "brand");
+  }
+
+  if (rating) {
+    filteredProducts = filterRating(filteredProducts, rating);
   }
 
   if (colorWithNames) {
