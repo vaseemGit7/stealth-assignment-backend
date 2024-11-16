@@ -8,8 +8,19 @@ const filterFacets = (filteredProducts, facet, key) => {
   }
 };
 
+const filterPriceRange = (filteredProducts, priceRange) => {
+  const price = priceRange.split("-");
+  const minPrice = price[0];
+  const maxPrice = price[1];
+
+  return filteredProducts.filter(
+    (product) =>
+      product.price >= Number(minPrice) && product.price <= Number(maxPrice)
+  );
+};
+
 const filterRating = (filteredProducts, rating) => {
-  return filteredProducts.filter((product) => product.rating >= rating);
+  return filteredProducts.filter((product) => product.rating >= Number(rating));
 };
 
 const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
@@ -18,9 +29,20 @@ const paginateProducts = (filteredProducts, pageNumber, pageSize) => {
 };
 
 const getProducts = (req, res) => {
-  const { pageNumber, pageSize, categories, brand, rating, colorWithNames } =
-    req.query;
+  const {
+    pageNumber,
+    pageSize,
+    priceRange,
+    categories,
+    brand,
+    rating,
+    colorWithNames,
+  } = req.query;
   let filteredProducts = products;
+
+  if (priceRange) {
+    filteredProducts = filterPriceRange(filteredProducts, priceRange);
+  }
 
   if (categories) {
     filteredProducts = filterFacets(filteredProducts, categories, "category");
