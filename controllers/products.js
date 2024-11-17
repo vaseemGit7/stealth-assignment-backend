@@ -3,14 +3,26 @@ import products from "../database/productsDB.js";
 const getOccurence = (filteredProducts, facetKey) => {
   let facetOccurence = {};
 
-  filteredProducts.forEach((product) => {
-    const facetValue = product[facetKey];
-    if (facetOccurence[facetValue]) {
-      facetOccurence[facetValue]++;
-    } else {
-      facetOccurence[facetValue] = 1;
-    }
-  });
+  if (facetKey === "size") {
+    filteredProducts.forEach((product) => {
+      product.size.forEach((facetValue) => {
+        if (facetOccurence[facetValue]) {
+          facetOccurence[facetValue]++;
+        } else {
+          facetOccurence[facetValue] = 1;
+        }
+      });
+    });
+  } else {
+    filteredProducts.forEach((product) => {
+      const facetValue = product[facetKey];
+      if (facetOccurence[facetValue]) {
+        facetOccurence[facetValue]++;
+      } else {
+        facetOccurence[facetValue] = 1;
+      }
+    });
+  }
 
   return facetOccurence;
 };
@@ -20,6 +32,8 @@ const getFacets = (filteredProducts) => {
   const brandOccurence = getOccurence(filteredProducts, "brand");
   const colorOccurence = getOccurence(filteredProducts, "color");
   const ratingOccurence = getOccurence(filteredProducts, "rating");
+  const sizeOccurence = getOccurence(filteredProducts, "size");
+  console.log(sizeOccurence);
 };
 
 const filterFacets = (filteredProducts, facet, key) => {
