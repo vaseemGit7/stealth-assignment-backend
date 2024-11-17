@@ -17,6 +17,9 @@ const getOccurence = (filteredProducts, facetKey) => {
 
 const getFacets = (filteredProducts) => {
   const categoryOccurence = getOccurence(filteredProducts, "category");
+  const brandOccurence = getOccurence(filteredProducts, "brand");
+  const colorOccurence = getOccurence(filteredProducts, "color");
+  const ratingOccurence = getOccurence(filteredProducts, "rating");
 };
 
 const filterFacets = (filteredProducts, facet, key) => {
