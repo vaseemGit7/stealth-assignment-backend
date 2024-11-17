@@ -1,5 +1,24 @@
 import products from "../database/productsDB.js";
 
+const getOccurence = (filteredProducts, facetKey) => {
+  let facetOccurence = {};
+
+  filteredProducts.forEach((product) => {
+    const facetValue = product[facetKey];
+    if (facetOccurence[facetValue]) {
+      facetOccurence[facetValue]++;
+    } else {
+      facetOccurence[facetValue] = 1;
+    }
+  });
+
+  return facetOccurence;
+};
+
+const getFacets = (filteredProducts) => {
+  const categoryOccurence = getOccurence(filteredProducts, "category");
+};
+
 const filterFacets = (filteredProducts, facet, key) => {
   if (Array.isArray(facet)) {
     return filteredProducts.filter((product) => facet.includes(product[key]));
@@ -90,6 +109,8 @@ const getProducts = (req, res) => {
   if (colorWithNames) {
     filteredProducts = filterFacets(filteredProducts, colorWithNames, "color");
   }
+
+  getFacets(filteredProducts);
 
   const sortedProducts = sortProducts(filteredProducts, sort);
 
