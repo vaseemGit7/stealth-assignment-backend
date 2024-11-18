@@ -20,7 +20,10 @@ const getOccurence = (filteredProducts, facetKey) => {
     }
   });
 
-  return Object.fromEntries(facetOccurrence.entries());
+  return Array.from(facetOccurrence.entries()).map(([key, value]) => ({
+    code: key,
+    count: value,
+  }));
 };
 
 const getFacets = (filteredProducts) => {
@@ -29,6 +32,16 @@ const getFacets = (filteredProducts) => {
   const colorOccurence = getOccurence(filteredProducts, "color");
   const ratingOccurence = getOccurence(filteredProducts, "rating");
   const sizeOccurence = getOccurence(filteredProducts, "size");
+
+  const facets = [
+    { code: "categories", values: categoryOccurence },
+    { code: "brands", values: brandOccurence },
+    { code: "colorWithNames", values: colorOccurence },
+    { code: "ratings", values: ratingOccurence },
+    { code: "sizes", values: sizeOccurence },
+  ];
+
+  return facets;
 };
 
 const filterFacets = (filteredProducts, facet, key) => {
@@ -118,7 +131,7 @@ const getProducts = (req, res) => {
     filteredProducts = filterFacets(filteredProducts, colorWithNames, "color");
   }
 
-  getFacets(filteredProducts);
+  const facets = getFacets(filteredProducts);
 
   if (categories) {
     filteredProducts = filterFacets(filteredProducts, categories, "category");
@@ -132,7 +145,9 @@ const getProducts = (req, res) => {
     Number(pageSize)
   );
 
-  res.send(updatedProducts);
+  const data = { result: updatedProducts, facets: facets };
+
+  res.send(data);
 };
 
 export default getProducts;
