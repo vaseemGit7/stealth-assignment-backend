@@ -1,30 +1,26 @@
 import products from "../database/productsDB.js";
 
 const getOccurence = (filteredProducts, facetKey) => {
-  let facetOccurence = {};
+  const facetOccurrence = new Map();
 
-  if (facetKey === "size") {
-    filteredProducts.forEach((product) => {
+  filteredProducts.forEach((product) => {
+    if (facetKey === "size") {
       product.size.forEach((facetValue) => {
-        if (facetOccurence[facetValue]) {
-          facetOccurence[facetValue]++;
-        } else {
-          facetOccurence[facetValue] = 1;
-        }
+        facetOccurrence.set(
+          facetValue,
+          (facetOccurrence.get(facetValue) || 0) + 1
+        );
       });
-    });
-  } else {
-    filteredProducts.forEach((product) => {
+    } else {
       const facetValue = product[facetKey];
-      if (facetOccurence[facetValue]) {
-        facetOccurence[facetValue]++;
-      } else {
-        facetOccurence[facetValue] = 1;
-      }
-    });
-  }
+      facetOccurrence.set(
+        facetValue,
+        (facetOccurrence.get(facetValue) || 0) + 1
+      );
+    }
+  });
 
-  return facetOccurence;
+  return Object.fromEntries(facetOccurrence.entries());
 };
 
 const getFacets = (filteredProducts) => {
@@ -33,7 +29,6 @@ const getFacets = (filteredProducts) => {
   const colorOccurence = getOccurence(filteredProducts, "color");
   const ratingOccurence = getOccurence(filteredProducts, "rating");
   const sizeOccurence = getOccurence(filteredProducts, "size");
-  console.log(sizeOccurence);
 };
 
 const filterFacets = (filteredProducts, facet, key) => {
@@ -107,10 +102,6 @@ const getProducts = (req, res) => {
     filteredProducts = filterPriceRange(filteredProducts, priceRange);
   }
 
-  if (categories) {
-    filteredProducts = filterFacets(filteredProducts, categories, "category");
-  }
-
   if (size) {
     filteredProducts = filterSize(filteredProducts, size);
   }
@@ -128,6 +119,10 @@ const getProducts = (req, res) => {
   }
 
   getFacets(filteredProducts);
+
+  if (categories) {
+    filteredProducts = filterFacets(filteredProducts, categories, "category");
+  }
 
   const sortedProducts = sortProducts(filteredProducts, sort);
 
