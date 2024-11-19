@@ -4,8 +4,8 @@ const getOccurence = (filteredProducts, facetKey) => {
   const facetOccurrence = new Map();
 
   filteredProducts.forEach((product) => {
-    if (facetKey === "size") {
-      product.size.forEach((facetValue) => {
+    if (facetKey === "size" || facetKey === "color") {
+      product[facetKey].forEach((facetValue) => {
         facetOccurrence.set(
           facetValue,
           (facetOccurrence.get(facetValue) || 0) + 1
