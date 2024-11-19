@@ -102,11 +102,11 @@ const getProducts = (req, res) => {
     pageNumber,
     pageSize,
     priceRange,
-    sort,
+    sortBy,
     categories,
-    size,
-    brand,
-    rating,
+    sizes,
+    brands,
+    ratings,
     colorWithNames,
   } = req.query;
   let filteredProducts = [...products];
@@ -115,16 +115,16 @@ const getProducts = (req, res) => {
     filteredProducts = filterPriceRange(filteredProducts, priceRange);
   }
 
-  if (size) {
-    filteredProducts = filterSize(filteredProducts, size);
+  if (sizes) {
+    filteredProducts = filterSize(filteredProducts, sizes);
   }
 
-  if (brand) {
-    filteredProducts = filterFacets(filteredProducts, brand, "brand");
+  if (brands) {
+    filteredProducts = filterFacets(filteredProducts, brands, "brand");
   }
 
-  if (rating) {
-    filteredProducts = filterRating(filteredProducts, rating);
+  if (ratings) {
+    filteredProducts = filterRating(filteredProducts, ratings);
   }
 
   if (colorWithNames) {
@@ -137,7 +137,7 @@ const getProducts = (req, res) => {
     filteredProducts = filterFacets(filteredProducts, categories, "category");
   }
 
-  const sortedProducts = sortProducts(filteredProducts, sort);
+  const sortedProducts = sortProducts(filteredProducts, sortBy);
 
   const updatedProducts = paginateProducts(
     sortedProducts,
