@@ -44,6 +44,18 @@ const getFacets = (filteredProducts) => {
   return facets;
 };
 
+const getOthers = (filteredProducts) => {
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    return a.price - b.price;
+  });
+
+  return {
+    minPrice: sortedProducts[0]?.price,
+    maxPrice: sortedProducts[sortedProducts.length - 1]?.price,
+    totalProducts: filteredProducts.length,
+  };
+};
+
 const filterFacets = (filteredProducts, facet, key) => {
   if (Array.isArray(facet)) {
     return filteredProducts.filter((product) => facet.includes(product[key]));
@@ -132,6 +144,7 @@ const getProducts = (req, res) => {
   }
 
   const facets = getFacets(filteredProducts);
+  const others = getOthers(filteredProducts);
 
   if (categories) {
     filteredProducts = filterFacets(filteredProducts, categories, "category");
@@ -145,7 +158,7 @@ const getProducts = (req, res) => {
     Number(pageSize)
   );
 
-  const data = { result: updatedProducts, facets: facets };
+  const data = { result: updatedProducts, facets: facets, others: others };
 
   res.send(data);
 };
