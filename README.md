@@ -3,8 +3,12 @@
 
 This project is  developed as part of an assignment for Stealth(milir/velvee). This project implements a filter service for fashion items, using React for the frontend and Express.js for the backend. The service allows users to filter fashion items based on various criteria such as category, price range, size, color, brand, and rating. It also supports sorting and pagination for improved usability.
 
-To run this project the frontend repository is mandatory
-, you can find it [here](https://github.com/vaseemGit7/stealth-assignment-frontend) .
+**Important Note**: The application requires both the backend and frontend to be run simultaneously for proper functionality.
+
+- You can find the backend repository [here](https://github.com/vaseemGit7/stealth-assignment-backend) 
+- Please follow the instructions provided in the documentation to set up and run the backend while using the app in the frontend.
+Similarly, the frontend setup must be active for backend interactions to work seamlessly.
+
 ## Features
 
 ### 1. **Filter Functionality:**
