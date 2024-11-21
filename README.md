@@ -5,7 +5,7 @@ This project is  developed as part of an assignment for Stealth(milir/velvee). T
 
 **Important Note**: The application requires both the backend and frontend to be run simultaneously for proper functionality.
 
-- You can find the backend repository [here](https://github.com/vaseemGit7/stealth-assignment-backend) 
+- You can find the frontend repository [here](https://github.com/vaseemGit7/stealth-assignment-frontend) 
 - Please follow the instructions provided in the documentation to set up and run the backend while using the app in the frontend.
 Similarly, the frontend setup must be active for backend interactions to work seamlessly.
 
